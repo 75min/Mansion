@@ -1,0 +1,573 @@
+const canvas = document.getElementById("game-board");
+const ctx = canvas.getContext("2d");
+
+const FPS = 60;
+const IntervalID = setInterval(game, 1000/FPS);
+const scale = 16;
+const scaleW = scale;
+const scaleH = scale*1.5;
+const GameSpeed  =8*scale/FPS //floor(8*scale/FPS) = 30프레임 기준으로 16픽셀을 1/8초 안에 이동
+const rows = canvas.height / scale;
+const columns = canvas.width / scale;
+
+let dev = 0;
+let devMode = 1;
+let devX = 0;
+let devY = 0;
+let devObj = [];
+let devDel = [];
+
+let stage = 0;
+
+let frmCycle = [0,1,2,3];
+let currentFrm = 0;
+let frmHold = 0;
+
+let char = {
+    hp: 30,
+    x: 3*scale,
+    y: 6*scale,
+    targetX: 0,
+    targetY: 0,
+    moving: -1,
+    dir: 1
+};
+let stopper = 0;
+
+let door = {
+    x: 3*scale,
+    y: 0*scale,
+    close: 0
+};
+
+let keykey = {
+    x: 0*scale,
+    y: 0*scale
+};
+
+function stageSetup() {
+    for (const obj of stageObj[stage]) { if (obj instanceof MoveSpine) {
+        obj.on = obj.originOn;
+    }}
+    for (const obj of stageObj[stage]) { if (obj instanceof PushWall) {
+        obj.x = obj.originX; obj.y = obj.originY;
+    }}
+    for (const obj of stageObj[stage]) { if (obj instanceof Enemy) {
+        obj.x = obj.originX; obj.y = obj.originY; obj.alive = 1;
+    }}
+    switch (stage) { //스테이지 초기 설정
+        case 0:
+            char.hp = 30;
+            char.x = 3*scale;
+            char.y = 6*scale;
+            door.x = 3*scale;
+            door.y = 0*scale;
+            door.close = 0;
+            break;
+        case 1:
+            char.hp = 13;
+            char.x = 0*scale;
+            char.y = 6*scale;
+            door.x = 6*scale;
+            door.y = 0*scale;
+            door.close = 1;
+            keykey.x = 5*scale;
+            keykey.y = 4*scale;
+            break;
+        case 2:
+            char.hp = 15;
+            char.x = 4*scale;
+            char.y = 0*scale;
+            door.x = 6*scale;
+            door.y = 0*scale;
+            door.close = 0;
+            break;
+        case 3:
+            char.hp = 33;
+            char.x = 3*scale;
+            char.y = 6*scale;
+            door.x = 3*scale;
+            door.y = 3*scale;
+            door.close = 1;
+            keykey.x = 5*scale;
+            keykey.y = 6*scale;
+            break;
+        case 4:
+            char.hp = 15;
+            char.x = 0*scale;
+            char.y = 6*scale;
+            door.x = 5*scale;
+            door.y = 1*scale;
+            door.close = 0;
+            break;
+        case 5:
+            char.hp = 1;
+            char.x = 3*scale;
+            char.y = 3*scale;
+            door.x = 3*scale;
+            door.y = 3*scale;
+            door.close = 0;
+            break;
+    }
+    document.getElementById("char.hp").textContent = `HP: ${char.hp}`;
+    document.getElementById("stage").textContent = `Stage: ${stage}`;
+}
+
+document.addEventListener("mousedown", (event) => { //개발자 모드: 맵 생성/수정/삭제
+    if (dev == 1) {
+        if (event.button === 0) { //마우스 좌클릭: 생성
+            devX = Math.floor(event.offsetX/scale);
+            devY = Math.floor(event.offsetY/scale);
+            devObj = [];
+            switch (devMode) {
+                case 0: //캐릭터 위치 변경
+                    console.log ("playerXY(",devX,",",devY,")");
+                    char.x = devX*scale;
+                    char.y = devY*scale;
+                    break;
+                case 1: //벽 생성
+                    console.log ("new Wall(",devX,",",devY,")");
+                    devObj = new Wall(devX, devY);
+                    stageObj[stage].push(devObj);
+                    break;
+                case 2: //고정 가시 생성
+                    console.log ("new Spine(",devX,",",devY,")");
+                    devObj = new Spine(devX, devY);
+                    stageObj[stage].push(devObj);
+                    break;
+                case 3: //점멸 가시 생성
+                    console.log ("new MoveSpine(",devX,",",devY,")");
+                    devObj = new MoveSpine(devX, devY, 0);
+                    stageObj[stage].push(devObj);
+                    break;
+                case 4: //미는 벽 생성
+                    console.log ("new PushWall(",devX,",",devY,")");
+                    devObj = new PushWall(devX, devY, 0);
+                    stageObj[stage].push(devObj);
+                    break;
+                case 5: //적 생성
+                    console.log ("new Enemy(",devX,",",devY,")");
+                    devObj = new Enemy(devX, devY);
+                    stageObj[stage].push(devObj);
+                    break;
+                case 8: //열쇠 위치 변경
+                    console.log ("KeyXY(",devX,",",devY,")");
+                    if (door.close == 0) {
+                        door.close = 1;
+                    }
+                    keykey.x = devX*scale;
+                    keykey.y = devY*scale;
+                    break;
+                case 9: //문 위치 변경
+                    console.log ("DoorXY(",devX,",",devY,")");
+                    door.x = devX*scale;
+                    door.y = devY*scale;
+                    break;
+            }
+        }
+        if (event.button === 1) { //마우스 휠 클릭: 점멸가시 상태 변경
+            devX = Math.floor(event.offsetX/scale);
+            devY = Math.floor(event.offsetY/scale);
+            for (const obj of stageObj[stage]) {if (obj instanceof MoveSpine) {
+                if (obj.x == devX*scale && obj.y == devY*scale) {
+                    if (obj.on == 0) {obj.on = 1;}
+                    else {obj.on = 0;}
+                    obj.originOn = obj.on;
+                }
+            }}
+        }
+        if (event.button === 2) {
+            devX = Math.floor(event.offsetX/scale);
+            devY = Math.floor(event.offsetY/scale);
+
+            devDel = stageObj[stage].findIndex(obj => obj instanceof Wall && obj.x == devX*scale && obj.y == devY*scale);
+            if (devDel != -1) {
+                stageObj[stage].splice(devDel, 1);
+                console.log("Wall(",devX,",",devY,") Deleted!");
+                devDel = [];
+            }
+            devDel = stageObj[stage].findIndex(obj => obj instanceof Spine && obj.x == devX*scale && obj.y == devY*scale);
+            if (devDel != -1) {
+                stageObj[stage].splice(devDel, 1);
+                console.log("Spine(",devX,",",devY,") Deleted!");
+                devDel = [];
+            }
+            devDel = stageObj[stage].findIndex(obj => obj instanceof MoveSpine && obj.x == devX*scale && obj.y == devY*scale);
+            if (devDel != -1) {
+                stageObj[stage].splice(devDel, 1);
+                console.log("MoveSpine(",devX,",",devY,") Deleted!");
+                devDel = [];
+            }
+            devDel = stageObj[stage].findIndex(obj => obj instanceof PushWall && obj.x == devX*scale && obj.y == devY*scale);
+            if (devDel != -1) {
+                stageObj[stage].splice(devDel, 1);
+                console.log("PushWall(",devX,",",devY,") Deleted!");
+                devDel = [];
+            }
+            devDel = stageObj[stage].findIndex(obj => obj instanceof Enemy && obj.x == devX*scale && obj.y == devY*scale);
+            if (devDel != -1) {
+                stageObj[stage].splice(devDel, 1);
+                console.log("Enemy(",devX,",",devY,") Deleted!");
+                devDel = [];
+            }
+            if (door.close == 1 && keykey.x == devX*scale && keykey.y == devY*scale) {
+                console.log("Key Deleted!");
+                door.close = 0;
+            }
+
+            canvas.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+            });
+        }
+    }
+});
+
+
+function isColliding(sbjX, sbjY, content) { //주체XY가 배열 속 객체와 충돌할 경우
+    for (const obj of stageObj[stage]) {
+        if (obj instanceof content) {
+            if (
+                sbjX < obj.x + scale &&
+                sbjX + scale > obj.x &&
+                sbjY < obj.y + scale &&
+                sbjY + scale > obj.y
+            ) {return true;}
+        }
+    } return false;
+}
+function isCollidEnemy(sbjX, sbjY) { //주체XY가 살아있는 적과 충돌할 경우
+    for (const obj of stageObj[stage]) {
+        if (obj instanceof Enemy) {
+            if (
+                obj.alive == 1 &&
+                sbjX < obj.x + scale &&
+                sbjX + scale > obj.x &&
+                sbjY < obj.y + scale &&
+                sbjY + scale > obj.y
+            ) {return true;}
+        }
+    } return false;
+}
+function isCollidSpine(sbjX, sbjY) { //주체XY가 솟은 가시와 충돌할 경우
+    for (const obj of stageObj[stage]) {
+        if (obj instanceof MoveSpine) {
+            if (
+                obj.on == 0 &&
+                sbjX < obj.x + scale &&
+                sbjX + scale > obj.x &&
+                sbjY < obj.y + scale &&
+                sbjY + scale > obj.y
+            ) {return true;}
+        }
+    } return false;
+}
+function isCollidit(sbjX, sbjY, objX, objY) { //주체XY가 특정 객체에 충돌할 경우
+    if (
+        sbjX < objX + scale &&
+        sbjX + scale > objX &&
+        sbjY < objY + scale &&
+        sbjY + scale > objY
+    ) {return true;}
+    return false;
+}
+function isCollide(obj) { //캐릭터 지정 객체에 충돌할 경우
+    return (
+        char.x == obj.x &&
+        char.y == obj.y
+    );
+}
+function isRoomOut() { //캐릭터가 룸 밖을 나갈 예정일 경우
+    if (
+        char.targetX == -scale ||
+        char.targetX == canvas.width ||
+        char.targetY == -scale ||
+        char.targetY == canvas.height
+    ) {return true;}
+    return false;
+}
+
+function startMove(dir) { //방향키 인풋이 들어온 경우 줄 함수
+    if (char.hp > 0) {
+        switch (dir) {
+            case 0:
+                char.targetX = char.x - scale;
+                char.targetY = char.y;
+                Moved();
+                char.moving = dir;
+                break;
+            case 1:
+                char.targetX = char.x;
+                char.targetY = char.y-scale;
+                Moved();
+                char.moving = dir;
+                break;
+            case 2:
+                char.targetX = char.x + scale;
+                char.targetY = char.y;
+                Moved();
+                char.moving = dir;
+                break;
+            case 3:
+                char.targetX = char.x;
+                char.targetY = char.y+scale;
+                Moved();
+                char.moving = dir;
+                break;
+        }
+        currentFrm = 0;
+        char.dir = char.moving;
+    } else {gameOver();}
+}
+
+function gameOver() { //캐릭터 HP가 1보다 작을 경우
+    alert("Try Again");
+    stageSetup();
+}
+
+document.addEventListener('keydown', (event) => {
+    if (event.ctrlKey) { //디벨로퍼 모드
+        if (dev == 0) {
+            dev = 1;
+            console.log("devMode: ON\n1,2,3,4,5,8,9,0: 모드 변경\nLMB: 생성\nMMB: 가시 ON/OFF\nRMB: 삭제");
+        } else {
+            dev = 0;
+            console.log("devMode: OFF");
+        }
+    }
+
+    if (event.key == "0") {
+        devMode = 0;
+    }
+    if (event.key == "1") {
+        devMode = 1;
+    }
+    if (event.key == "2") {
+        devMode = 2;
+    }
+    if (event.key == "3") {
+        devMode = 3;
+    }
+    if (event.key == "4") {
+        devMode = 4;
+    }
+    if (event.key == "5") {
+        devMode = 5;
+    }
+    if (event.key == "8") {
+        devMode = 8;
+    }
+    if (event.key == "9") {
+        devMode = 9;
+    }
+    if (event.key == "r") {
+        stageSetup();
+    }
+    if (char.moving == -1) {
+        //화면 클릭 인풋
+        document.getElementById("left-btn").addEventListener("click", () => startMove(0));
+        document.getElementById("up-btn").addEventListener("click", () => startMove(1));
+        document.getElementById("right-btn").addEventListener("click", () => startMove(2));
+        document.getElementById("down-btn").addEventListener("click", () => startMove(3));
+
+        //방향키 인풋
+        if (event.key == 'ArrowLeft') {
+            stopper = 0;
+            startMove(0);
+        }
+        if (event.key == 'ArrowUp') {
+            stopper = 0;
+            startMove(1);
+        }
+        if (event.key == 'ArrowRight') {
+            stopper = 0;
+            startMove(2);
+        }
+        if (event.key == 'ArrowDown') {
+            stopper = 0;
+            startMove(3);
+        }
+    }
+})
+
+function step() {
+    if (
+        !isColliding(char.targetX, char.targetY, Wall) 
+        && !isColliding(char.targetX, char.targetY, PushWall)
+        && !isCollidEnemy(char.targetX, char.targetY)
+        && !isRoomOut()
+        && stopper == 0
+    ) {
+        switch (char.moving) {
+            case 0:
+                char.x -= GameSpeed;
+                break;
+            case 1:
+                char.y -= GameSpeed;
+                break;
+            case 2:
+                char.x += GameSpeed;
+                break;
+            case 3:
+                char.y += GameSpeed;
+                break;
+        }
+    } else if (isColliding(char.targetX, char.targetY, PushWall) || isCollidEnemy(char.targetX, char.targetY)) {
+        stopper = 1;
+    }
+    for (const obj of stageObj[stage]) { if (obj instanceof PushWall) {
+        obj.push(char.targetX, char.targetY, char.moving);
+    }}
+    for (const obj of stageObj[stage]) { if (obj instanceof Enemy) {
+        if (obj.alive == 1) {
+            obj.attack(char.targetX, char.targetY, char.moving);
+        }
+    }}
+}
+
+function Moved() {
+    setTimeout(() => {
+        if ( //가려는 칸이 벽, 미는 벽, 적, 룸끝이 아닐 경우
+            !isColliding(char.targetX, char.targetY, Wall) 
+            && !isColliding(char.targetX, char.targetY, PushWall)
+            && !isCollidEnemy(char.targetX, char.targetY)
+            && !isRoomOut()
+            && char.moving !== -1 && stopper == 0
+        ) {
+            char.x = char.targetX;
+            char.y = char.targetY;
+            char.hp -= 1;
+        }
+        if (isColliding(char.targetX, char.targetY, Wall) || isRoomOut()) { //벽이나 룸끝에 충돌시 HP -1
+            char.hp -= 1;
+        }
+        if (isCollide(keykey)) { //열쇠와 충돌시
+            if (door.close == 1) {door.close = 0;}
+        }
+
+        for (const obj of stageObj[stage]) { if (obj instanceof PushWall) { //밀 수 있는 벽과 충돌시
+            obj.stop(char.targetX, char.targetY, char.moving);
+            if (stopper == 1) {char.hp -= 1;}
+            stopper = 0;
+        }}
+        for (const obj of stageObj[stage]) { if (obj instanceof Enemy) { //적과 충돌시
+            obj.stop(char.targetX, char.targetY, char.moving);
+            if (stopper == 1) {char.hp -= 1;}
+            stopper = 0;
+        }}
+        stageObj[stage].forEach((obj, index) => { if (obj instanceof Spine) { //고정가시와 충돌시
+            if (obj.check(char.x, char.y)) {char.hp -= 1;}
+        }});
+        stageObj[stage].forEach((obj, index) => { if (obj instanceof MoveSpine) { //점멸가시 상태전환, 점멸가시와 충돌시
+            obj.onoff();
+            if (obj.check(char.x, char.y)) {char.hp -= 1;}
+        }});
+        if (isCollide(door)) { //문과 충돌시
+            if (door.close == 0) {
+                stage +=1 ;
+                stageSetup();
+            }
+        }
+
+        document.getElementById("char.hp").textContent = `HP: ${char.hp}`;
+        char.moving = -1;
+        return false;
+    }, 100);
+}
+
+//애니메이팅에 필요한 함수
+function drawFrame(img, frmX, frmY, xPos, yPos) {
+    ctx.drawImage(img, frmX*scaleW, frmY*scaleH, scaleW, scaleH, xPos, yPos, scaleW, scaleH);
+}
+function playFrame(img, Xcycle, Yset, xPos, yPos) {
+    frmHold++;
+    drawFrame(img, Xcycle[currentFrm], Yset, xPos, yPos);
+    if (frmHold >= 2) {
+        currentFrm++;
+        frmHold = 0;
+    }
+    if (currentFrm >= Xcycle.lenght) {
+        currentFrm = 3;
+    }
+}
+
+function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    for (i=0; i<columns; i++) {
+        for (j=0; j<rows; j++) {
+            ctx.drawImage(bck_tile, scale*2*0, 0, scale*2, scale*2, i*scale*2, j*scale*2, scale*2, scale*2);
+        }
+    }
+    ctx.save();
+    ctx.translate(0, -scale/2);
+    ctx.drawImage(spr_door, door.close*scale, 0, scaleW, scaleH, door.x, door.y, scaleW, scaleH);
+    if (door.close == 1) {
+        ctx.drawImage(spr_key, keykey.x, keykey.y, scaleW, scaleH);
+    }
+
+    stageObj[stage].forEach((obj, index) => {
+        if (obj instanceof Wall) {
+            ctx.drawImage(spr_wall, obj.x, obj.y, scaleW, scaleH);
+        }
+        if (obj instanceof PushWall) {
+            ctx.drawImage(spr_pushwall, obj.x, obj.y, scaleW, scaleH);
+        }
+        if (obj instanceof Spine) {
+            ctx.drawImage(spr_spine, obj.x, obj.y, scaleW, scaleH);
+        }
+        if (obj instanceof MoveSpine) {
+            if (char.moving != -1) {
+                if (obj.on == 0) {
+                    drawFrame(spr_movespine, obj.frameA[currentFrm], 0, obj.x, obj.y);
+                } else {drawFrame(spr_movespine, obj.frameB[currentFrm], 0, obj.x, obj.y);}
+            } else {ctx.drawImage(spr_movespine, obj.on*scale*3, 0, scaleW, scaleH, obj.x, obj.y, scaleW, scaleH);}
+        }
+        if (obj instanceof Enemy) {
+            ctx.drawImage(spr_enemy, Math.abs(obj.alive -1)*scale, 0, scaleW, scaleH, obj.x, obj.y, scaleW, scaleH);
+        }
+    });
+
+    if (char.moving == -1) { //플레이어 draw
+            ctx.drawImage(spr_char, char.dir*scaleW, 0, scaleW, scaleH, char.x, char.y, scaleW, scaleH);
+    } else {
+        if (stopper == 0) {
+            playFrame(spr_char, frmCycle, char.dir+1, char.x, char.y);
+        } else {playFrame(spr_char, frmCycle, 1, char.x, char.y);}
+    }
+    ctx.restore();
+
+    if (dev == 1) {
+        ctx.fillStyle = "white";
+        ctx.font = "11px 굴림";
+        switch (devMode) {
+            case 0:
+                ctx.fillText("DevMode:" +devMode + "player", 0, 7*scale);
+                break;
+            case 1:
+                ctx.fillText("DevMode:" +devMode + "벽", 0, 7*scale);
+                break;
+            case 2:
+                ctx.fillText("DevMode:" +devMode + "가시", 0, 7*scale);
+                break;
+            case 3:
+                ctx.fillText("DevMode:" +devMode + "점멸가시", 0, 7*scale);
+                break;
+            case 4:
+                ctx.fillText("DevMode:" +devMode + "미는벽", 0, 7*scale);
+                break;
+            case 5:
+                ctx.fillText("DevMode:" +devMode + "적", 0, 7*scale);
+                break;
+            case 8:
+                ctx.fillText("DevMode:" +devMode + "열쇠", 0, 7*scale);
+                break;
+            case 9:
+                ctx.fillText("DevMode:" +devMode + "문", 0, 7*scale);
+                break;
+        }
+    }
+}
+
+function game() {
+    step();
+    draw();
+}
