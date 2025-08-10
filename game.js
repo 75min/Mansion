@@ -6,7 +6,7 @@ const IntervalID = setInterval(game, 1000/FPS);
 const scale = 16;
 const scaleW = scale;
 const scaleH = scale*1.5;
-const GameSpeed  =8*scale/FPS //floor(8*scale/FPS) = 30프레임 기준으로 16픽셀을 1/8초 안에 이동
+const GameSpeed  =6*scale/FPS //floor(8*scale/FPS) = 30프레임 기준으로 16픽셀을 1/8초 안에 이동
 const rows = canvas.height / scale;
 const columns = canvas.width / scale;
 
@@ -415,10 +415,7 @@ document.addEventListener('keydown', (event) => {
     }
     if (char.moving == -1) {
         //화면 클릭 인풋
-        document.getElementById("left-btn").addEventListener("click", () => startMove(0));
-        document.getElementById("up-btn").addEventListener("click", () => startMove(1));
-        document.getElementById("right-btn").addEventListener("click", () => startMove(2));
-        document.getElementById("down-btn").addEventListener("click", () => startMove(3));
+        document.getElementById("restart-btn").addEventListener("click", () => stageSetup());
 
         //방향키 인풋
         if (event.key == 'ArrowLeft') {
@@ -438,7 +435,7 @@ document.addEventListener('keydown', (event) => {
             startMove(3);
         }
     }
-})
+});
 
 function step() {
     if (
@@ -522,7 +519,7 @@ function Moved() {
         document.getElementById("char.hp").textContent = `HP: ${char.hp}`;
         char.moving = -1;
         return false;
-    }, 100);
+    }, 150);
 }
 
 //애니메이팅에 필요한 함수
@@ -532,7 +529,7 @@ function drawFrame(img, frmX, frmY, xPos, yPos) {
 function playFrame(img, Xcycle, Yset, xPos, yPos) {
     frmHold++;
     drawFrame(img, Xcycle[currentFrm], Yset, xPos, yPos);
-    if (frmHold >= 2) {
+    if (frmHold >= 3) {
         currentFrm++;
         frmHold = 0;
     }
@@ -582,7 +579,7 @@ function draw() {
     } else {
         if (stopper == 0) {
             playFrame(spr_char, frmCycle, char.dir+1, char.x, char.y);
-        } else {playFrame(spr_char, frmCycle, 1, char.x, char.y);}
+        } else {playFrame(spr_char, frmCycle, char.dir+5, char.x, char.y);}
     }
     ctx.restore();
 
