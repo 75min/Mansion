@@ -319,6 +319,53 @@ function startMove(dir) { //방향키 인풋이 들어온 경우 줄 함수
     } else {gameOver();}
 }
 
+let startX, startY;
+let threshold = 30; // 스와이프 최소 거리(px)
+
+document.addEventListener("touchstart", function(e) {
+    const touch = e.touches[0];
+    startX = touch.clientX;
+    startY = touch.clientY;
+}, false);
+
+// 터치 끝
+document.addEventListener("touchend", function(e) {
+    const touch = e.changedTouches[0];
+    let endX = touch.clientX;
+    let endY = touch.clientY;
+
+    let diffX = endX - startX;
+    let diffY = endY - startY;
+
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+        // 좌우 스와이프
+        if (Math.abs(diffX) > threshold) {
+            if (diffX > 0) {
+                stopper = 0;
+                startMove(2);
+                // 오른쪽 이동 로직
+            } else {
+                stopper = 0;
+                startMove(0);
+                // 왼쪽 이동 로직
+            }
+        }
+    } else {
+        // 상하 스와이프
+        if (Math.abs(diffY) > threshold) {
+            if (diffY > 0) {
+                stopper = 0;
+                startMove(3);
+                // 아래 이동 로직
+            } else {
+                stopper = 0;
+                startMove(1);
+                // 위 이동 로직
+            }
+        }
+    }
+}, false);
+
 function gameOver() { //캐릭터 HP가 1보다 작을 경우
     alert("Try Again");
     stageSetup();
@@ -570,4 +617,5 @@ function draw() {
 function game() {
     step();
     draw();
+
 }
