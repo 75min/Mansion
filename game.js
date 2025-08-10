@@ -319,6 +319,10 @@ function startMove(dir) { //방향키 인풋이 들어온 경우 줄 함수
     } else {gameOver();}
 }
 
+document.body.addEventListener('touchmove', function(e) {
+    e.preventDefault();
+}, { passive: false });
+
 let startX, startY;
 let threshold = 30; // 스와이프 최소 거리(px)
 
@@ -619,3 +623,4 @@ function game() {
     draw();
 
 }
+
