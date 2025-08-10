@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 body {
@@ -11,6 +12,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    overflow: hidden;
 }
 
 .game-container {
@@ -70,4 +72,5 @@ span {
     font-style: italic;
     font-family: 'Microsoft Himalaya', sans-serif;
     font-size: 1rem;
+
 }
