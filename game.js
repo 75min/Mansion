@@ -276,12 +276,12 @@ function isCollide(obj) { //캐릭터 지정 객체에 충돌할 경우
         char.y == obj.y
     );
 }
-function isRoomOut() { //캐릭터가 룸 밖을 나갈 예정일 경우
+function isRoomOut(targetX, targetY) { //주체XY가 룸 밖을 나갈 예정일 경우
     if (
-        char.targetX == -scale ||
-        char.targetX == canvas.width ||
-        char.targetY == -scale ||
-        char.targetY == canvas.height
+        targetX == -scale ||
+        targetX == canvas.width ||
+        targetY == -scale ||
+        targetY == canvas.height
     ) {return true;}
     return false;
 }
@@ -411,7 +411,7 @@ document.addEventListener('keydown', (event) => {
         devMode = 9;
     }
     if (event.key == "r") {
-        stageSetup();
+	if (char.moving == -1) {stageSetup();}
     }
     if (char.moving == -1) {
         //화면 클릭 인풋
@@ -442,7 +442,7 @@ function step() {
         !isColliding(char.targetX, char.targetY, Wall) 
         && !isColliding(char.targetX, char.targetY, PushWall)
         && !isCollidEnemy(char.targetX, char.targetY)
-        && !isRoomOut()
+        && !isRoomOut(char.targetX, char.targetY)
         && stopper == 0
     ) {
         switch (char.moving) {
@@ -478,14 +478,14 @@ function Moved() {
             !isColliding(char.targetX, char.targetY, Wall) 
             && !isColliding(char.targetX, char.targetY, PushWall)
             && !isCollidEnemy(char.targetX, char.targetY)
-            && !isRoomOut()
+            && !isRoomOut(char.targetX, char.targetY)
             && char.moving !== -1 && stopper == 0
         ) {
             char.x = char.targetX;
             char.y = char.targetY;
             char.hp -= 1;
         }
-        if (isColliding(char.targetX, char.targetY, Wall) || isRoomOut()) { //벽이나 룸끝에 충돌시 HP -1
+        if (isColliding(char.targetX, char.targetY, Wall) || isRoomOut(char.targetX, char.targetY)) { //벽이나 룸끝에 충돌시 HP -1
             char.hp -= 1;
         }
         if (isCollide(keykey)) { //열쇠와 충돌시

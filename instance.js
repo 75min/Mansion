@@ -38,6 +38,7 @@ class PushWall {
                 case 0:
                     if (
                         !isColliding(this.x-scale, this.y, Wall)
+                        && !isRoomOut(this.x-scale, this.y)
                         && !isColliding(this.x-scale, this.y, PushWall)
                         && !isCollidEnemy(this.x-scale, this.y)
                         || this.move > 0 && this.move < 3
@@ -51,6 +52,7 @@ class PushWall {
                 case 1:
                     if (
                         !isColliding(this.x, this.y-scale, Wall)
+                        && !isRoomOut(this.x, this.y-scale)
                         && !isColliding(this.x, this.y-scale, PushWall)
                         && !isCollidEnemy(this.x, this.y-scale)
                         || this.move > 0 && this.move < 3
@@ -64,6 +66,7 @@ class PushWall {
                 case 2:
                     if (
                         !isColliding(this.x+scale, this.y, Wall)
+                        && !isRoomOut(this.x+scale, this.y)
                         && !isColliding(this.x+scale, this.y, PushWall)
                         && !isCollidEnemy(this.x+scale, this.y)
                         || this.move > 0 && this.move < 3
@@ -77,6 +80,7 @@ class PushWall {
                 case 3:
                     if (
                         !isColliding(this.x, this.y+scale, Wall)
+                        && !isRoomOut(this.x, this.y+scale)
                         && !isColliding(this.x, this.y+scale, PushWall)
                         && !isCollidEnemy(this.x, this.y+scale)
                         || this.move > 0 && this.move < 3
@@ -144,6 +148,7 @@ class Enemy {
                 case 0:
                     if (
                         !isColliding(this.x-scale, this.y, Wall)
+                        && !isRoomOut(this.x-scale, this.y)
                         && !isColliding(this.x-scale, this.y, PushWall)
                         && !isColliding(this.x-scale, this.y, Spine)
                         && !isCollidSpine(this.x-scale, this.y)
@@ -156,6 +161,7 @@ class Enemy {
                         this.move += 1;
                     } else if (
                         isColliding(this.x-scale, this.y, Wall)
+                        || isRoomOut(this.x-scale, this.y)
                         || isColliding(this.x-scale, this.y, PushWall)
                         || isColliding(this.x-scale, this.y, Spine)
                         || isCollidSpine(this.x-scale, this.y)
@@ -167,6 +173,7 @@ class Enemy {
                 case 1:
                     if (
                         !isColliding(this.x, this.y-scale, Wall)
+                        && !isRoomOut(this.x, this.y-scale)
                         && !isColliding(this.x, this.y-scale, PushWall)
                         && !isColliding(this.x, this.y-scale, Spine)
                         && !isCollidSpine(this.x, this.y-scale)
@@ -179,6 +186,7 @@ class Enemy {
                         this.move += 1;
                     } else if (
                         isColliding(this.x, this.y-scale, Wall)
+                        || isRoomOut(this.x, this.y-scale)
                         || isColliding(this.x, this.y-scale, PushWall)
                         || isColliding(this.x, this.y-scale, Spine)
                         || isCollidSpine(this.x, this.y-scale)
@@ -190,6 +198,7 @@ class Enemy {
                 case 2:
                     if (
                         !isColliding(this.x+scale, this.y, Wall)
+                        && !isRoomOut(this.x+scale, this.y)
                         && !isColliding(this.x+scale, this.y, PushWall)
                         && !isColliding(this.x+scale, this.y, Spine)
                         && !isCollidSpine(this.x+scale, this.y)
@@ -202,6 +211,7 @@ class Enemy {
                         this.move += 1;
                     } else if (
                         isColliding(this.x+scale, this.y, Wall)
+                        || isRoomOut(this.x+scale, this.y)
                         || isColliding(this.x+scale, this.y, PushWall)
                         || isColliding(this.x+scale, this.y, Spine)
                         || isCollidSpine(this.x+scale, this.y)
@@ -213,6 +223,7 @@ class Enemy {
                 case 3:
                     if (
                         !isColliding(this.x, this.y+scale, Wall)
+                        && !isRoomOut(this.x, this.y+scale)
                         && !isColliding(this.x, this.y+scale, PushWall)
                         && !isColliding(this.x, this.y+scale, Spine)
                         && !isCollidSpine(this.x, this.y+scale)
@@ -225,6 +236,7 @@ class Enemy {
                         this.move += 1;
                     } else if (
                         isColliding(this.x, this.y+scale, Wall)
+                        || isRoomOut(this.x, this.y+scale)
                         || isColliding(this.x, this.y+scale, PushWall)
                         || isColliding(this.x, this.y+scale, Spine)
                         || isCollidSpine(this.x, this.y+scale)
