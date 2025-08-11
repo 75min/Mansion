@@ -40,7 +40,7 @@ class PushWall {
                         !isColliding(this.x-scale, this.y, Wall)
                         && !isColliding(this.x-scale, this.y, PushWall)
                         && !isCollidEnemy(this.x-scale, this.y)
-                        || 0 < this.move < 3
+                        || this.move > 0 && this.move < 3
                     ) {
                         this.endX = this.startX-scale;
                         this.endY = this.startY;
@@ -53,7 +53,7 @@ class PushWall {
                         !isColliding(this.x, this.y-scale, Wall)
                         && !isColliding(this.x, this.y-scale, PushWall)
                         && !isCollidEnemy(this.x, this.y-scale)
-                        || 0 < this.move < 3
+                        || this.move > 0 && this.move < 3
                     ) {
                         this.endX = this.startX;
                         this.endY = this.startY-scale;
@@ -66,7 +66,7 @@ class PushWall {
                         !isColliding(this.x+scale, this.y, Wall)
                         && !isColliding(this.x+scale, this.y, PushWall)
                         && !isCollidEnemy(this.x+scale, this.y)
-                        || 0 < this.move < 3
+                        || this.move > 0 && this.move < 3
                     ) {
                         this.endX = this.startX+scale;
                         this.endY = this.startY;
@@ -79,7 +79,7 @@ class PushWall {
                         !isColliding(this.x, this.y+scale, Wall)
                         && !isColliding(this.x, this.y+scale, PushWall)
                         && !isCollidEnemy(this.x, this.y+scale)
-                        || 0 < this.move < 3
+                        || this.move > 0 && this.move < 3
                     ) {
                         this.endX = this.startX;
                         this.endY = this.startY+scale;
@@ -148,7 +148,7 @@ class Enemy {
                         && !isColliding(this.x-scale, this.y, Spine)
                         && !isCollidSpine(this.x-scale, this.y)
                         && !isCollidEnemy(this.x-scale, this.y)
-                        || 0 < this.move < 3
+                        || this.move > 0 && this.move < 3
                     ) {
                         this.endX = this.startX-scale;
                         this.endY = this.startY;
@@ -171,7 +171,7 @@ class Enemy {
                         && !isColliding(this.x, this.y-scale, Spine)
                         && !isCollidSpine(this.x, this.y-scale)
                         && !isCollidEnemy(this.x, this.y-scale)
-                        || 0 < this.move < 3
+                        || this.move > 0 && this.move < 3
                     ) {
                         this.endX = this.startX;
                         this.endY = this.startY-scale;
@@ -194,7 +194,7 @@ class Enemy {
                         && !isColliding(this.x+scale, this.y, Spine)
                         && !isCollidSpine(this.x+scale, this.y)
                         && !isCollidEnemy(this.x+scale, this.y)
-                        || 0 < this.move < 3
+                        || this.move > 0 && this.move < 3
                     ) {
                         this.endX = this.startX+scale;
                         this.endY = this.startY;
@@ -217,7 +217,7 @@ class Enemy {
                         && !isColliding(this.x, this.y+scale, Spine)
                         && !isCollidSpine(this.x, this.y+scale)
                         && !isCollidEnemy(this.x, this.y+scale)
-                        || 0 < this.move < 3
+                        || this.move > 0 && this.move < 3
                     ) {
                         this.endX = this.startX;
                         this.endY = this.startY+scale;
