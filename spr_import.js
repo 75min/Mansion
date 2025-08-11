@@ -19,5 +19,6 @@ spr_key.src = "sprites/spr_key.png"
 
 const bck_tile = new Image();
 
-bck_tile.src = "bck_tile.png"
+bck_tile.src = "sprites/bck_tile.png"
+
 
