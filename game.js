@@ -545,43 +545,46 @@ function draw() {
             ctx.drawImage(bck_tile, scale*2*0, 0, scale*2, scale*2, i*scale*2, j*scale*2, scale*2, scale*2);
         }
     }
-    ctx.save();
-    ctx.translate(0, -scale/2);
-    ctx.drawImage(spr_door, door.close*scale, 0, scaleW, scaleH, door.x, door.y, scaleW, scaleH);
-    if (door.close == 1) {
-        ctx.drawImage(spr_key, keykey.x, keykey.y, scaleW, scaleH);
-    }
 
-    stageObj[stage].forEach((obj, index) => {
-        if (obj instanceof Wall) {
-            ctx.drawImage(spr_wall, obj.x, obj.y, scaleW, scaleH);
+    for (i=0; i<columns; i++) {
+        ctx.save();
+        ctx.translate(0, -scale/2);
+        if (door.y == i*scale) {ctx.drawImage(spr_door, door.close*scale, 0, scaleW, scaleH, door.x, door.y, scaleW, scaleH);}
+        if (door.close == 1) {
+            if (keykey.y == i*scale) {ctx.drawImage(spr_key, keykey.x, keykey.y, scaleW, scaleH);}
         }
-        if (obj instanceof PushWall) {
-            ctx.drawImage(spr_pushwall, obj.x, obj.y, scaleW, scaleH);
-        }
-        if (obj instanceof Spine) {
-            ctx.drawImage(spr_spine, obj.x, obj.y, scaleW, scaleH);
-        }
-        if (obj instanceof MoveSpine) {
-            if (char.moving != -1) {
-                if (obj.on == 0) {
-                    drawFrame(spr_movespine, obj.frameA[currentFrm], 0, obj.x, obj.y);
-                } else {drawFrame(spr_movespine, obj.frameB[currentFrm], 0, obj.x, obj.y);}
-            } else {ctx.drawImage(spr_movespine, obj.on*scale*3, 0, scaleW, scaleH, obj.x, obj.y, scaleW, scaleH);}
-        }
-        if (obj instanceof Enemy) {
-            ctx.drawImage(spr_enemy, Math.abs(obj.alive -1)*scale, 0, scaleW, scaleH, obj.x, obj.y, scaleW, scaleH);
-        }
-    });
 
-    if (char.moving == -1) { //플레이어 draw
-            ctx.drawImage(spr_char, char.dir*scaleW, 0, scaleW, scaleH, char.x, char.y, scaleW, scaleH);
-    } else {
-        if (stopper == 0) {
-            playFrame(spr_char, frmCycle, char.dir+1, char.x, char.y);
-        } else {playFrame(spr_char, frmCycle, char.dir+5, char.x, char.y);}
+        stageObj[stage].forEach((obj, index) => {
+            if (obj instanceof Wall && obj.y == i*scale) {
+                ctx.drawImage(spr_wall, obj.x, obj.y, scaleW, scaleH);
+            }
+            if (obj instanceof PushWall && Math.floor(obj.y/scale)*scale == i*scale) {
+                ctx.drawImage(spr_pushwall, obj.x, obj.y, scaleW, scaleH);
+            }
+            if (obj instanceof Spine && obj.y == i*scale) {
+                ctx.drawImage(spr_spine, obj.x, obj.y, scaleW, scaleH);
+            }
+            if (obj instanceof MoveSpine && obj.y == i*scale) {
+                if (char.moving != -1) {
+                    if (obj.on == 0) {
+                        drawFrame(spr_movespine, obj.frameA[currentFrm], 0, obj.x, obj.y);
+                    } else {drawFrame(spr_movespine, obj.frameB[currentFrm], 0, obj.x, obj.y);}
+                } else {ctx.drawImage(spr_movespine, obj.on*scale*3, 0, scaleW, scaleH, obj.x, obj.y, scaleW, scaleH);}
+            }
+            if (obj instanceof Enemy && Math.floor(obj.y/scale)*scale == i*scale) {
+                ctx.drawImage(spr_enemy, Math.abs(obj.alive -1)*scale, 0, scaleW, scaleH, obj.x, obj.y, scaleW, scaleH);
+            }
+        });
+
+        if (char.moving == -1) { //플레이어 draw
+                if (char.y == i*scale) {ctx.drawImage(spr_char, char.dir*scaleW, 0, scaleW, scaleH, char.x, char.y, scaleW, scaleH);}
+        } else {
+            if (stopper == 0) {
+                if (Math.floor(char.y/scale)*scale == i*scale) {playFrame(spr_char, frmCycle, char.dir+1, char.x, char.y);}
+            } else {if (char.y == i*scale) {playFrame(spr_char, frmCycle, char.dir+5, char.x, char.y);}}
+        }
+        ctx.restore();
     }
-    ctx.restore();
 
     if (dev == 1) {
         ctx.fillStyle = "white";
