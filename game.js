@@ -109,8 +109,8 @@ function stageSetup() {
             door.close = 0;
             break;
     }
-    document.getElementById("char.hp").textContent = `HP: ${char.hp}`;
-    document.getElementById("stage").textContent = `Stage: ${stage}`;
+    document.getElementById("char.hp").textContent = `Hp: ${char.hp}`;
+    document.getElementById("stage").textContent = `Lv: ${stage}`;
 }
 
 document.addEventListener("mousedown", (event) => { //개발자 모드: 맵 생성/수정/삭제
@@ -411,7 +411,7 @@ document.addEventListener('keydown', (event) => {
         devMode = 9;
     }
     if (event.key == "r") {
-	if (char.moving == -1) {stageSetup();}
+	    if (char.moving == -1) {stageSetup();}
     }
     if (char.moving == -1) {
         //화면 클릭 인풋
@@ -436,6 +436,10 @@ document.addEventListener('keydown', (event) => {
         }
     }
 });
+
+if (char.moving == -1) {
+    document.getElementById('restart-btn').addEventListener('touchend', () => stageSetup());
+}
 
 function step() {
     if (
@@ -516,7 +520,7 @@ function Moved() {
             }
         }
 
-        document.getElementById("char.hp").textContent = `HP: ${char.hp}`;
+        document.getElementById("char.hp").textContent = `Hp: ${char.hp}`;
         char.moving = -1;
         return false;
     }, 150);
