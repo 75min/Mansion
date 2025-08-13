@@ -45,5 +45,14 @@ const stageObj = [
         new PushWall(5,5,0)
     ],
     [ //stage5
+        new Wall(2,3),new Wall(2,2),new Wall(3,2),new Wall(4,2),
+        new Wall(4,3),new Wall(4,4),new Wall(4,5),new Wall(4,6),
+        new Wall(3,6),new Wall(2,6),new Wall(1,6),new Wall(0,6),
+
+        new Spine(6,6),new Spine(6,5),
+        new Enemy(2,4),new Enemy(1,4),new Enemy(2,1),new Enemy(5,5),
+        new PushWall(1,2,0)
+    ],
+    [ //stage6
     ]
 ]

@@ -260,4 +260,13 @@ class Enemy {
             this.move = 0;
         }
     }
+    check() { //활성화된 점멸가시에 적이 닿았는지 확인
+        if (this.alive == 1) {
+            for (const obj of stageObj[stage]) { if (obj instanceof MoveSpine) {
+                if (this.x == obj.x && this.y == obj.y && obj.on == 1) {
+                    this.alive = 0;
+                }
+            }}
+        }
+    }
 }

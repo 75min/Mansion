@@ -101,6 +101,16 @@ function stageSetup() {
             door.close = 0;
             break;
         case 5:
+            char.hp = 40;
+            char.x = 3*scale;
+            char.y = 3*scale;
+            door.x = 3*scale;
+            door.y = 3*scale;
+            door.close = 1;
+            keykey.x = 5*scale;
+            keykey.y = 6*scale;
+            break;
+        case 6:
             char.hp = 1;
             char.x = 3*scale;
             char.y = 3*scale;
@@ -512,6 +522,9 @@ function Moved() {
         stageObj[stage].forEach((obj, index) => { if (obj instanceof MoveSpine) { //점멸가시 상태전환, 점멸가시와 충돌시
             obj.onoff();
             if (obj.check(char.x, char.y)) {char.hp -= 1;}
+        }});
+        stageObj[stage].forEach((obj, index) => { if (obj instanceof Enemy) { //활성화된 점멸가시에 적 충돌시
+            obj.check();
         }});
         if (isCollide(door)) { //문과 충돌시
             if (door.close == 0) {
