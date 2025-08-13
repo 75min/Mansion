@@ -56,7 +56,7 @@ function stageSetup() {
         obj.x = obj.originX; obj.y = obj.originY; obj.alive = 1;
     }}
     switch (stage) { //스테이지 초기 설정
-        case 0:
+        case 0: //Main
             char.hp = 30;
             char.x = 3*scale;
             char.y = 6*scale;
@@ -64,7 +64,51 @@ function stageSetup() {
             door.y = 0*scale;
             door.close = 0;
             break;
-        case 1:
+        case 1: //tutorial: Key
+            char.hp = 11;
+            char.x = 3*scale;
+            char.y = 0*scale;
+            door.x = 3*scale;
+            door.y = 1*scale;
+            door.close = 1;
+            keykey.x = 3*scale;
+            keykey.y = 6*scale;
+            break;
+        case 2: //tutorial: Spine
+            char.hp = 9;
+            char.x = 3*scale;
+            char.y = 1*scale;
+            door.x = 3*scale;
+            door.y = 6*scale;
+            door.close = 0;
+            break;
+        case 3: //tutorial: MoveSpine
+            char.hp = 10;
+            char.x = 3*scale;
+            char.y = 6*scale;
+            door.x = 0*scale;
+            door.y = 0*scale;
+            door.close = 0;
+            break;
+        case 4: //tutorial: Enemy
+            char.hp = 18;
+            char.x = 0*scale;
+            char.y = 0*scale;
+            door.x = 6*scale;
+            door.y = 6*scale;
+            door.close = 0;
+            break;
+        case 5: //tutorial: PushWall
+            char.hp = 13;
+            char.x = 6*scale;
+            char.y = 6*scale;
+            door.x = 0*scale;
+            door.y = 6*scale;
+            door.close = 1;
+            keykey.x = 3*scale;
+            keykey.y = 3*scale;
+            break;
+        case 6:
             char.hp = 13;
             char.x = 0*scale;
             char.y = 6*scale;
@@ -74,7 +118,7 @@ function stageSetup() {
             keykey.x = 5*scale;
             keykey.y = 4*scale;
             break;
-        case 2:
+        case 7:
             char.hp = 15;
             char.x = 4*scale;
             char.y = 0*scale;
@@ -82,7 +126,7 @@ function stageSetup() {
             door.y = 0*scale;
             door.close = 0;
             break;
-        case 3:
+        case 8:
             char.hp = 33;
             char.x = 3*scale;
             char.y = 6*scale;
@@ -92,7 +136,7 @@ function stageSetup() {
             keykey.x = 5*scale;
             keykey.y = 6*scale;
             break;
-        case 4:
+        case 9:
             char.hp = 15;
             char.x = 0*scale;
             char.y = 6*scale;
@@ -100,7 +144,7 @@ function stageSetup() {
             door.y = 1*scale;
             door.close = 0;
             break;
-        case 5:
+        case 10:
             char.hp = 40;
             char.x = 3*scale;
             char.y = 3*scale;
@@ -110,7 +154,7 @@ function stageSetup() {
             keykey.x = 5*scale;
             keykey.y = 6*scale;
             break;
-        case 6:
+        case 11:
             char.hp = 1;
             char.x = 3*scale;
             char.y = 3*scale;
