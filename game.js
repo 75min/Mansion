@@ -65,19 +65,19 @@ function stageSetup() {
             door.close = 0;
             break;
         case 1: //tutorial: Key
-            char.hp = 11;
+            char.hp = 13;
             char.x = 3*scale;
             char.y = 0*scale;
-            door.x = 3*scale;
-            door.y = 1*scale;
+            door.x = 2*scale;
+            door.y = 0*scale;
             door.close = 1;
             keykey.x = 3*scale;
             keykey.y = 6*scale;
             break;
         case 2: //tutorial: Spine
-            char.hp = 9;
-            char.x = 3*scale;
-            char.y = 1*scale;
+            char.hp = 10;
+            char.x = 2*scale;
+            char.y = 0*scale;
             door.x = 3*scale;
             door.y = 6*scale;
             door.close = 0;
@@ -91,7 +91,7 @@ function stageSetup() {
             door.close = 0;
             break;
         case 4: //tutorial: Enemy
-            char.hp = 18;
+            char.hp = 16;
             char.x = 0*scale;
             char.y = 0*scale;
             door.x = 6*scale;
@@ -608,6 +608,15 @@ function draw() {
     }
 
     for (i=0; i<columns; i++) {
+        stageObj[stage].forEach((obj, index) => { //draw empty black space
+            if (obj instanceof Wall && obj.y == i*scale) {
+                if (obj.w != 1 || obj.h != 1) {
+                    ctx.fillStyle = "black";
+                    ctx.fillRect(obj.x, obj.y, obj.w*scale, obj.h*scale);
+                }
+            }
+        });
+
         ctx.save();
         ctx.translate(0, -scale/2);
         if (door.y == i*scale) {ctx.drawImage(spr_door, door.close*scale, 0, scaleW, scaleH, door.x, door.y, scaleW, scaleH);}
@@ -617,7 +626,9 @@ function draw() {
 
         stageObj[stage].forEach((obj, index) => {
             if (obj instanceof Wall && obj.y == i*scale) {
-                ctx.drawImage(spr_wall, obj.x, obj.y, scaleW, scaleH);
+                if (obj.w == 1 || obj.h == 1) {
+                    ctx.drawImage(spr_wall, obj.x, obj.y, scaleW, scaleH);
+                }
             }
             if (obj instanceof PushWall && Math.floor(obj.y/scale)*scale == i*scale) {
                 ctx.drawImage(spr_pushwall, obj.x, obj.y, scaleW, scaleH);

@@ -1,7 +1,9 @@
 class Wall {
-    constructor(x,y) {
+    constructor(x,y,w=1,h=1) {
         this.x = x*scale;
         this.y = y*scale;
+        this.w = w;
+        this.h = h;
     }
 }
 
