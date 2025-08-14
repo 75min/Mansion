@@ -63,7 +63,9 @@ function stageSetup() {
             door.x = 3*scale;
             door.y = 0*scale;
             door.close = 0;
+            document.getElementById("help").innerHTML = "화면을 스와이프 하거나<br>방향키를 눌러 이동할 수 있습니다.";
             break;
+            
         case 1: //tutorial: Key
             char.hp = 13;
             char.x = 3*scale;
@@ -73,6 +75,7 @@ function stageSetup() {
             door.close = 1;
             keykey.x = 3*scale;
             keykey.y = 6*scale;
+            document.getElementById("help").innerHTML = "잠긴 문은 열쇠를 획득해<br>열 수 있습니다.";
             break;
         case 2: //tutorial: Spine
             char.hp = 10;
@@ -81,6 +84,7 @@ function stageSetup() {
             door.x = 3*scale;
             door.y = 6*scale;
             door.close = 0;
+            document.getElementById("help").innerHTML = "가시에 닿으면 한 스텝에<br>Hp가 한 번 더 깎입니다.";
             break;
         case 3: //tutorial: MoveSpine
             char.hp = 10;
@@ -89,6 +93,7 @@ function stageSetup() {
             door.x = 0*scale;
             door.y = 0*scale;
             door.close = 0;
+            document.getElementById("help").innerHTML = "점멸가시는 두 턴에 한 번 활성화됩니다.<br>벽에 부딪혀 한 턴을 소비할 수 있습니다.";
             break;
         case 4: //tutorial: Enemy
             char.hp = 16;
@@ -97,6 +102,7 @@ function stageSetup() {
             door.x = 6*scale;
             door.y = 6*scale;
             door.close = 0;
+            document.getElementById("help").innerHTML = "조각상은 밀 수 있습니다.<br>벽이나 가시로 밀면 부숴집니다.";
             break;
         case 5: //tutorial: PushWall
             char.hp = 13;
@@ -108,6 +114,7 @@ function stageSetup() {
             keykey.x = 3*scale;
             keykey.y = 3*scale;
             break;
+            document.getElementById("help").innerHTML = "화분은 밀 수 있으나<br>벽이나 가시에 닿아도 부술 수 없습니다.";
         case 6:
             char.hp = 13;
             char.x = 0*scale;
@@ -118,6 +125,7 @@ function stageSetup() {
             keykey.x = 5*scale;
             keykey.y = 4*scale;
             break;
+            document.getElementById("help").innerHTML = "화면을 스와이프 하거나<br>방향키를 눌러 이동할 수 있습니다.";
         case 7:
             char.hp = 15;
             char.x = 4*scale;
