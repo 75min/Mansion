@@ -113,8 +113,8 @@ function stageSetup() {
             door.close = 1;
             keykey.x = 3*scale;
             keykey.y = 3*scale;
-            break;
             document.getElementById("help").innerHTML = "화분은 밀 수 있으나<br>벽이나 가시에 닿아도 부술 수 없습니다.";
+            break;
         case 6:
             char.hp = 13;
             char.x = 0*scale;
@@ -124,8 +124,8 @@ function stageSetup() {
             door.close = 1;
             keykey.x = 5*scale;
             keykey.y = 4*scale;
-            break;
             document.getElementById("help").innerHTML = "화면을 스와이프 하거나<br>방향키를 눌러 이동할 수 있습니다.";
+            break;
         case 7:
             char.hp = 15;
             char.x = 4*scale;
