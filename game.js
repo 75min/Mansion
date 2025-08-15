@@ -14,6 +14,7 @@ let dev = 0;
 let devMode = 1;
 let devX = 0;
 let devY = 0;
+let devChar = [30,0,0, 0,0,0, 0,0]; //char.hp,x,y, door.on,x,y, keykey.x,y
 let devObj = [];
 let devDel = [];
 
@@ -45,185 +46,66 @@ let keykey = {
     y: 0*scale
 };
 
-function stageSetup() {
-    for (const obj of stageObj[stage]) { if (obj instanceof MoveSpine) {
-        obj.on = obj.originOn;
-    }}
-    for (const obj of stageObj[stage]) { if (obj instanceof PushWall) {
-        obj.x = obj.originX; obj.y = obj.originY;
-    }}
-    for (const obj of stageObj[stage]) { if (obj instanceof Enemy) {
-        obj.x = obj.originX; obj.y = obj.originY; obj.alive = 1;
-    }}
-    switch (stage) { //스테이지 초기 설정
-        case 0: //Main
-            char.hp = 30;
-            char.x = 3*scale;
-            char.y = 6*scale;
-            door.x = 3*scale;
-            door.y = 0*scale;
-            door.close = 0;
-            document.getElementById("help").innerHTML = "화면을 스와이프 하거나<br>방향키를 눌러 이동할 수 있습니다.";
-            break;
-            
-        case 1: //tutorial: Key
-            char.hp = 13;
-            char.x = 3*scale;
-            char.y = 0*scale;
-            door.x = 2*scale;
-            door.y = 0*scale;
-            door.close = 1;
-            keykey.x = 3*scale;
-            keykey.y = 6*scale;
-            document.getElementById("help").innerHTML = "잠긴 문은 열쇠를 획득해<br>열 수 있습니다.";
-            break;
-        case 2: //tutorial: Spine
-            char.hp = 10;
-            char.x = 2*scale;
-            char.y = 0*scale;
-            door.x = 3*scale;
-            door.y = 6*scale;
-            door.close = 0;
-            document.getElementById("help").innerHTML = "가시에 닿으면 한 스텝에<br>Hp가 한 번 더 깎입니다.";
-            break;
-        case 3: //tutorial: MoveSpine
-            char.hp = 10;
-            char.x = 3*scale;
-            char.y = 6*scale;
-            door.x = 0*scale;
-            door.y = 0*scale;
-            door.close = 0;
-            document.getElementById("help").innerHTML = "점멸가시는 두 턴에 한 번 활성화됩니다.<br>벽에 부딪혀 한 턴을 소비할 수 있습니다.";
-            break;
-        case 4: //tutorial: Enemy
-            char.hp = 16;
-            char.x = 0*scale;
-            char.y = 0*scale;
-            door.x = 6*scale;
-            door.y = 6*scale;
-            door.close = 0;
-            document.getElementById("help").innerHTML = "조각상은 밀 수 있습니다.<br>벽이나 가시로 밀면 부숴집니다.";
-            break;
-        case 5: //tutorial: PushWall
-            char.hp = 13;
-            char.x = 6*scale;
-            char.y = 6*scale;
-            door.x = 0*scale;
-            door.y = 6*scale;
-            door.close = 1;
-            keykey.x = 3*scale;
-            keykey.y = 3*scale;
-            document.getElementById("help").innerHTML = "화분은 밀 수 있으나<br>벽이나 가시에 닿아도 부술 수 없습니다.";
-            break;
-        case 6:
-            char.hp = 13;
-            char.x = 0*scale;
-            char.y = 6*scale;
-            door.x = 6*scale;
-            door.y = 0*scale;
-            door.close = 1;
-            keykey.x = 5*scale;
-            keykey.y = 4*scale;
-            document.getElementById("help").innerHTML = "화면을 스와이프 하거나<br>방향키를 눌러 이동할 수 있습니다.";
-            break;
-        case 7:
-            char.hp = 15;
-            char.x = 4*scale;
-            char.y = 0*scale;
-            door.x = 6*scale;
-            door.y = 0*scale;
-            door.close = 0;
-            break;
-        case 8:
-            char.hp = 33;
-            char.x = 3*scale;
-            char.y = 6*scale;
-            door.x = 3*scale;
-            door.y = 3*scale;
-            door.close = 1;
-            keykey.x = 5*scale;
-            keykey.y = 6*scale;
-            break;
-        case 9:
-            char.hp = 15;
-            char.x = 0*scale;
-            char.y = 6*scale;
-            door.x = 5*scale;
-            door.y = 1*scale;
-            door.close = 0;
-            break;
-        case 10:
-            char.hp = 40;
-            char.x = 3*scale;
-            char.y = 3*scale;
-            door.x = 3*scale;
-            door.y = 3*scale;
-            door.close = 1;
-            keykey.x = 5*scale;
-            keykey.y = 6*scale;
-            break;
-        case 11:
-            char.hp = 1;
-            char.x = 3*scale;
-            char.y = 3*scale;
-            door.x = 3*scale;
-            door.y = 3*scale;
-            door.close = 0;
-            break;
-    }
-    document.getElementById("char.hp").textContent = `Hp: ${char.hp}`;
-    document.getElementById("stage").textContent = `Lv: ${stage}`;
-}
-
 document.addEventListener("mousedown", (event) => { //개발자 모드: 맵 생성/수정/삭제
-    if (dev == 1) {
+    if (dev == 1 && stage == 0) {
         if (event.button === 0) { //마우스 좌클릭: 생성
             devX = Math.floor(event.offsetX/scale);
             devY = Math.floor(event.offsetY/scale);
             devObj = [];
             switch (devMode) {
                 case 0: //캐릭터 위치 변경
-                    console.log ("playerXY(",devX,",",devY,")");
                     char.x = devX*scale;
                     char.y = devY*scale;
+                    devChar[1] = devX;
+                    devChar[2] = devY;
                     break;
                 case 1: //벽 생성
-                    console.log ("new Wall(",devX,",",devY,")");
                     devObj = new Wall(devX, devY);
                     stageObj[stage].push(devObj);
+                    stageDev.push(devObj);
                     break;
                 case 2: //고정 가시 생성
-                    console.log ("new Spine(",devX,",",devY,")");
                     devObj = new Spine(devX, devY);
                     stageObj[stage].push(devObj);
+                    stageDev.push(devObj);
                     break;
                 case 3: //점멸 가시 생성
-                    console.log ("new MoveSpine(",devX,",",devY,")");
                     devObj = new MoveSpine(devX, devY, 0);
                     stageObj[stage].push(devObj);
+                    stageDev.push(devObj);
                     break;
                 case 4: //미는 벽 생성
-                    console.log ("new PushWall(",devX,",",devY,")");
                     devObj = new PushWall(devX, devY, 0);
                     stageObj[stage].push(devObj);
+                    stageDev.push(devObj);
                     break;
                 case 5: //적 생성
-                    console.log ("new Enemy(",devX,",",devY,")");
                     devObj = new Enemy(devX, devY);
                     stageObj[stage].push(devObj);
+                    stageDev.push(devObj);
+                    break;
+                case 7: //캐릭터 HP 수정
+                    if (char.hp < 100) {
+                        char.hp += 1;
+                        devChar[0] = char.hp;
+                    } 
+                    document.getElementById("char.hp").textContent = `Hp: ${char.hp}`;
                     break;
                 case 8: //열쇠 위치 변경
-                    console.log ("KeyXY(",devX,",",devY,")");
                     if (door.close == 0) {
                         door.close = 1;
+                        devChar[3] = 1;
                     }
                     keykey.x = devX*scale;
                     keykey.y = devY*scale;
+                    devChar[6] = devX;
+                    devChar[7] = devY;
                     break;
                 case 9: //문 위치 변경
-                    console.log ("DoorXY(",devX,",",devY,")");
                     door.x = devX*scale;
                     door.y = devY*scale;
+                    devChar[4] = devX;
+                    devChar[5] = devY;
                     break;
             }
         }
@@ -245,38 +127,44 @@ document.addEventListener("mousedown", (event) => { //개발자 모드: 맵 생�
             devDel = stageObj[stage].findIndex(obj => obj instanceof Wall && obj.x == devX*scale && obj.y == devY*scale);
             if (devDel != -1) {
                 stageObj[stage].splice(devDel, 1);
-                console.log("Wall(",devX,",",devY,") Deleted!");
+                stageDev.splice(devDel, 1);
                 devDel = [];
             }
             devDel = stageObj[stage].findIndex(obj => obj instanceof Spine && obj.x == devX*scale && obj.y == devY*scale);
             if (devDel != -1) {
                 stageObj[stage].splice(devDel, 1);
-                console.log("Spine(",devX,",",devY,") Deleted!");
+                stageDev.splice(devDel, 1);
                 devDel = [];
             }
             devDel = stageObj[stage].findIndex(obj => obj instanceof MoveSpine && obj.x == devX*scale && obj.y == devY*scale);
             if (devDel != -1) {
                 stageObj[stage].splice(devDel, 1);
-                console.log("MoveSpine(",devX,",",devY,") Deleted!");
+                stageDev.splice(devDel, 1);
                 devDel = [];
             }
             devDel = stageObj[stage].findIndex(obj => obj instanceof PushWall && obj.x == devX*scale && obj.y == devY*scale);
             if (devDel != -1) {
                 stageObj[stage].splice(devDel, 1);
-                console.log("PushWall(",devX,",",devY,") Deleted!");
+                stageDev.splice(devDel, 1);
                 devDel = [];
             }
             devDel = stageObj[stage].findIndex(obj => obj instanceof Enemy && obj.x == devX*scale && obj.y == devY*scale);
             if (devDel != -1) {
                 stageObj[stage].splice(devDel, 1);
-                console.log("Enemy(",devX,",",devY,") Deleted!");
+                stageDev.splice(devDel, 1);
                 devDel = [];
             }
             if (door.close == 1 && keykey.x == devX*scale && keykey.y == devY*scale) {
-                console.log("Key Deleted!");
                 door.close = 0;
+                devChar[3] = 0;
             }
-
+            if (devMode == 7) {
+                if (char.hp > 1) {
+                    char.hp -= 1;
+                    devChar[0] = char.hp;
+                    document.getElementById("char.hp").textContent = `Hp: ${char.hp}`;
+                }
+            }
             canvas.addEventListener('contextmenu', function(e) {
                 e.preventDefault();
             });
@@ -402,31 +290,32 @@ document.addEventListener("touchend", function(e) {
 
     let diffX = endX - startX;
     let diffY = endY - startY;
-
-    if (Math.abs(diffX) > Math.abs(diffY)) {
-        // 좌우 스와이프
-        if (Math.abs(diffX) > threshold) {
-            if (diffX > 0) {
-                stopper = 0;
-                startMove(2);
-                // 오른쪽 이동 로직
-            } else {
-                stopper = 0;
-                startMove(0);
-                // 왼쪽 이동 로직
+    if (char.moving == -1) {
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+            // 좌우 스와이프
+            if (Math.abs(diffX) > threshold) {
+                if (diffX > 0) {
+                    stopper = 0;
+                    startMove(2);
+                    // 오른쪽 이동 로직
+                } else {
+                    stopper = 0;
+                    startMove(0);
+                    // 왼쪽 이동 로직
+                }
             }
-        }
-    } else {
-        // 상하 스와이프
-        if (Math.abs(diffY) > threshold) {
-            if (diffY > 0) {
-                stopper = 0;
-                startMove(3);
-                // 아래 이동 로직
-            } else {
-                stopper = 0;
-                startMove(1);
-                // 위 이동 로직
+        } else {
+            // 상하 스와이프
+            if (Math.abs(diffY) > threshold) {
+                if (diffY > 0) {
+                    stopper = 0;
+                    startMove(3);
+                    // 아래 이동 로직
+                } else {
+                    stopper = 0;
+                    startMove(1);
+                    // 위 이동 로직
+                }
             }
         }
     }
@@ -444,7 +333,7 @@ document.addEventListener('keydown', (event) => {
             console.log("devMode: ON\n1,2,3,4,5,8,9,0: 모드 변경\nLMB: 생성\nMMB: 가시 ON/OFF\nRMB: 삭제");
         } else {
             dev = 0;
-            console.log("devMode: OFF");
+            exitDevMode();
         }
     }
 
@@ -466,6 +355,9 @@ document.addEventListener('keydown', (event) => {
     if (event.key == "5") {
         devMode = 5;
     }
+    if (event.key == "7") {
+        devMode = 7;
+    }
     if (event.key == "8") {
         devMode = 8;
     }
@@ -473,7 +365,9 @@ document.addEventListener('keydown', (event) => {
         devMode = 9;
     }
     if (event.key == "r") {
-	    if (char.moving == -1) {stageSetup();}
+	    if (char.moving == -1) {
+            stageSetup();
+        }
     }
     if (char.moving == -1) {
         //화면 클릭 인풋
@@ -687,6 +581,9 @@ function draw() {
                 break;
             case 5:
                 ctx.fillText("DevMode:" +devMode + "적", 0, 7*scale);
+                break;
+            case 7:
+                ctx.fillText("DevMode:" +devMode + "HP", 0, 7*scale);
                 break;
             case 8:
                 ctx.fillText("DevMode:" +devMode + "열쇠", 0, 7*scale);
