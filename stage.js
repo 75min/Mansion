@@ -115,6 +115,17 @@ const stageObj = [
         new Wall(4, 3, 1, 1), new Wall(4, 4, 1, 1), new Wall(3, 5, 1, 1), new Wall(2, 5, 1, 1), new Wall(1, 5, 1, 1), 
         new Wall(0, 5, 1, 1)
     ],
+	[ //stage12
+		new Wall(2, 0, 1, 1), new Wall(2, 1, 1, 1), new Wall(3, 1, 1, 1), new PushWall(4, 0, 0), 
+		new PushWall(4, 1, 0), new PushWall(5, 1, 0), new PushWall(6, 2, 0), new Wall(4, 4, 1, 1), 
+		new Wall(3, 4, 1, 1), new Wall(2, 4, 1, 1), new Wall(6, 4, 1, 1), new Wall(4, 3, 1, 1), 
+		new Wall(0, 2, 1, 1), new Enemy(3, 3), new Wall(0, 1, 1, 1), new Wall(1, 0, 1, 1), 
+		new Wall(0, 0, 1, 1), new Enemy(1, 2), new Wall(0, 3, 1, 1), new Wall(0, 4, 1, 1), 
+		new Wall(0, 5, 1, 1), new Wall(0, 6, 1, 1), new Wall(4, 5, 1, 1), new Wall(4, 6, 1, 1), 
+		new MoveSpine(1, 5, 1), new MoveSpine(2, 5, 0), new PushWall(1, 4, 0), new Wall(5, 4, 1, 1), 
+		new MoveSpine(1, 3, 0),
+		new Wall(5, 5, 2, 2)
+	],
     [ //end
         new Wall(0,0, 2,7),new Wall(5,0, 2,7),new Wall(2,0, 3,2),new Wall(2,5, 3,2)
     ]
@@ -240,6 +251,11 @@ function stageSetup() {
             keykey.x=4*scale; keykey.y=0*scale;
             break;
         case 12:
+            char.hp=24; char.x=3*scale; char.y=0*scale;
+			door.close=1; door.x=3*scale; door.y=5*scale;
+			keykey.x=1*scale; keykey.y=1*scale;
+            break;
+		case 13:
             char.hp = 1;
             char.x = 3*scale;
             char.y = 3*scale;
@@ -279,4 +295,5 @@ function exitDevMode() {
     codeString += `\nkeykey.x=${devChar[6]}*scale; keykey.y=${devChar[7]}*scale;`
 
     console.log(codeString);
+
 }
