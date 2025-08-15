@@ -106,6 +106,8 @@ const stageObj = [
         new PushWall(1,2,0)
     ],
     [ //stage11
+        new Wall(4, 1, 3, 6),new Wall(0, 6, 4, 1),
+        
         new Wall(3, 2, 1, 1), new Wall(3, 1, 1, 1), new PushWall(2, 0, 0), new Wall(4, 1, 1, 1), 
         new Wall(5, 1, 1, 1), new Wall(6, 0, 1, 1), new PushWall(0, 2, 0), new PushWall(2, 1, 0), 
         new PushWall(2, 2, 0), new PushWall(1, 2, 0), new MoveSpine(0, 0, 1), new MoveSpine(1, 0, 0), 
