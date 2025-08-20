@@ -126,6 +126,15 @@ const stageObj = [
 		new MoveSpine(1, 3, 0),
 		new Wall(5, 5, 2, 2)
 	],
+	[ //stage13
+		new PushWall(3, 4, 0), new PushWall(2, 5, 0), new PushWall(4, 5, 0), new PushWall(5, 4, 0),
+		new PushWall(1, 4, 0), new PushWall(2, 3, 0), new PushWall(4, 3, 0), new PushWall(2, 2, 0),
+		new PushWall(3, 2, 0), new MoveSpine(4, 4, 0), new Enemy(0, 6), new Enemy(6, 6), new Spine(0, 5),
+		new Spine(0, 4), new PushWall(5, 2, 0), new Wall(4, 0, 1, 1), new MoveSpine(3, 1, 0), new Enemy(6, 1),
+		new Enemy(0, 1), new Wall(0, 0, 1, 1), new Wall(6, 0, 1, 1), new Wall(5, 0, 1, 1), new Wall(1, 0, 1, 1),
+		new Spine(4, 1), new Wall(1, 2, 1, 1), new MoveSpine(0, 2, 0), new MoveSpine(2, 4, 0), new MoveSpine(3, 3, 0),
+		new MoveSpine(4, 2, 0), new Wall(2, 0, 1, 1)
+	],
     [ //end
         new Wall(0,0, 2,7),new Wall(5,0, 2,7),new Wall(2,0, 3,2),new Wall(2,5, 3,2)
     ]
@@ -250,19 +259,24 @@ function stageSetup() {
             door.close=1; door.x=3*scale; door.y=0*scale;
             keykey.x=4*scale; keykey.y=0*scale;
             break;
-        case 12:
-            char.hp=24; char.x=3*scale; char.y=0*scale;
-			door.close=1; door.x=3*scale; door.y=5*scale;
-			keykey.x=1*scale; keykey.y=1*scale;
-            break;
-		case 13:
-            char.hp = 1;
-            char.x = 3*scale;
-            char.y = 3*scale;
-            door.x = 3*scale;
-            door.y = 3*scale;
-            door.close = 0;
-            break;
+	case 12:
+            	char.hp=24; char.x=3*scale; char.y=0*scale;
+		door.close=1; door.x=3*scale; door.y=5*scale;
+		keykey.x=1*scale; keykey.y=1*scale;
+           		break;
+	case 13:
+            	char.hp=15; char.x=3*scale; char.y=5*scale;
+		door.close=0; door.x=3*scale; door.y=0*scale;
+		keykey.x=3*scale; keykey.y=1*scale;
+            	break;
+	case 14:
+            	char.hp = 1;
+            	char.x = 3*scale;
+            	char.y = 3*scale;
+            	door.x = 3*scale;
+            	door.y = 3*scale;
+            	door.close = 0;
+            	break;
     }
     document.getElementById("char.hp").textContent = `Hp: ${char.hp}`;
     document.getElementById("stage").textContent = `Lv: ${stage}`;
