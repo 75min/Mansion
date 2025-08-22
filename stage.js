@@ -135,6 +135,16 @@ const stageObj = [
 		new Spine(4, 1), new Wall(1, 2, 1, 1), new MoveSpine(0, 2, 0), new MoveSpine(2, 4, 0), new MoveSpine(3, 3, 0),
 		new MoveSpine(4, 2, 0), new Wall(2, 0, 1, 1)
 	],
+	[ //stage14
+		new Wall(6, 2, 1, 1), new Wall(5, 2, 1, 1), new Wall(4, 2, 1, 1), new Wall(4, 4, 1, 1),
+		new Wall(4, 5, 1, 1), new MoveSpine(6, 5, 0), new MoveSpine(6, 4, 1), new Spine(5, 5),
+		new Wall(2, 4, 1, 1), new Wall(2, 5, 1, 1), new Wall(3, 2, 1, 1), new Wall(2, 2, 1, 1),
+		new Wall(1, 2, 1, 1), new PushWall(2, 3, 0), new PushWall(6, 3, 0), new MoveSpine(3, 3, 1),
+		new MoveSpine(3, 4, 0), new MoveSpine(3, 5, 1), new Wall(4, 0, 1, 1), new Wall(4, 1, 1, 1),
+		new PushWall(2, 6, 0), new Spine(1, 4), new Enemy(0, 5), new Spine(5, 4), new Spine(0, 4),
+		new Enemy(1, 5), new MoveSpine(3, 6, 0), new Spine(0, 6), new MoveSpine(4, 6, 1), new Spine(5, 6),
+		new Wall(5, 0, 2, 2)
+	],
     [ //end
         new Wall(0,0, 2,7),new Wall(5,0, 2,7),new Wall(2,0, 3,2),new Wall(2,5, 3,2)
     ]
@@ -270,6 +280,11 @@ function stageSetup() {
 		keykey.x=3*scale; keykey.y=1*scale;
             	break;
 	case 14:
+            	char.hp=29; char.x=3*scale; char.y=0*scale;
+		door.close=1; door.x=5*scale; door.y=3*scale;
+		keykey.x=1*scale; keykey.y=6*scale;
+		break;
+	case 15:
             	char.hp = 1;
             	char.x = 3*scale;
             	char.y = 3*scale;
