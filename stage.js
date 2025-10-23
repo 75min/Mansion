@@ -51,13 +51,20 @@ const stageObj = [
 
         new PushWall(2,4,0),new PushWall(3,5,0),new PushWall(4,4,0)
     ],
-    [ //stage6
+    [ //stage6: game start
         new Spine(0,4),new Spine(0,5),
         new MoveSpine(2,1,0),new MoveSpine(2,3,1),
         new Enemy(2,6),new Enemy(3,4),
         new PushWall(4,5,0),new PushWall(4,3,0)
     ],
     [ //stage7
+        new Wall(5, 1, 1, 1), new Wall(5, 2, 1, 1), new Wall(5, 3, 1, 1), new Wall(5, 5, 1, 1), 
+        new Wall(3, 0, 1, 1), new Wall(3, 1, 1, 1), new Wall(3, 2, 1, 1), new Wall(3, 3, 1, 1), 
+        new Wall(3, 4, 1, 1), new Wall(3, 5, 1, 1), new Wall(3, 6, 1, 1), new Wall(4, 5, 1, 1), new Wall(0, 0, 3, 7),
+        new Enemy(6, 1), new Spine(5, 0), new MoveSpine(6, 5, 0), new MoveSpine(4, 4, 0), new MoveSpine(4, 3, 1), 
+        new MoveSpine(4, 2, 0), new MoveSpine(4, 1, 1)
+    ],
+    [ //stage8
         new Wall(0,4, 7,3),
 
         new Wall(0,3),new Wall(1,3),new Wall(2,3),
@@ -70,7 +77,12 @@ const stageObj = [
         new MoveSpine(3,0,1),new MoveSpine(2,2,1),new MoveSpine(3,2,0),
         new MoveSpine(4,2,1),new MoveSpine(5,2,0),new MoveSpine(6,2,1)
     ],
-    [ //stage8
+    [ //stage9
+        new Enemy(5, 1), new MoveSpine(6, 2, 1), new PushWall(5, 0, 0), new Wall(3, 1, 1, 1), 
+        new Wall(3, 2, 1, 1), new Wall(5, 2, 1, 1), new Wall(3, 3, 1, 1), new Wall(5, 3, 1, 1),
+        new PushWall(4, 2, 0), new MoveSpine(3, 4, 0), new MoveSpine(5, 4, 1)
+    ],
+    [ //stage10
         new Wall(2,2),new Wall(2,3),new Wall(2,4),
         new Wall(3,2),new Wall(3,4),new Wall(4,2),
         new Wall(4,4),new Wall(4,5),new Wall(4,6),
@@ -81,7 +93,13 @@ const stageObj = [
         new Enemy(2,1),new Enemy(5,3),
         new PushWall(1,4,0)
     ],
-    [ //stage9
+    [ //stage11
+        new MoveSpine(0, 5, 0), new MoveSpine(1, 6, 1), new Enemy(0, 4), new Wall(0, 2, 1, 1), 
+        new Wall(1, 2, 1, 1), new Wall(2, 2, 1, 1), new Wall(3, 2, 1, 1), new Wall(4, 3, 1, 1), 
+        new Wall(4, 4, 1, 1), new Wall(4, 5, 1, 1), new Wall(4, 6, 1, 1), new PushWall(2, 4, 0), 
+        new PushWall(3, 4, 0), new MoveSpine(2, 5, 0), new Enemy(1, 4), new Wall(0, 0, 7, 2), new Wall(4, 2, 3, 5)
+    ],
+    [ //stage12
         new Wall(2,2, 3,3),
 
         new Wall(4,1),new Wall(5,2),new Wall(1,5),
@@ -96,7 +114,15 @@ const stageObj = [
         new PushWall(6,2,0),new PushWall(4,6,0),
         new PushWall(5,5,0)
     ],
-    [ //stage10
+    [ //stage13
+        new Wall(1, 2, 1, 1), new Wall(2, 2, 1, 1), new Wall(3, 2, 1, 1), new Wall(4, 2, 1, 1), new Wall(0, 6, 7, 1), 
+        new Wall(5, 2, 1, 1), new Wall(3, 1, 1, 1), new Wall(3, 0, 1, 1), new MoveSpine(6, 2, 0), 
+        new MoveSpine(6, 3, 1), new MoveSpine(0, 3, 0), new MoveSpine(0, 2, 1), new PushWall(0, 1, 0), 
+        new Enemy(6, 1), new Wall(0, 5, 1, 1), new Wall(1, 5, 1, 1), new Wall(2, 5, 1, 1), new Wall(3, 5, 1, 1), 
+        new Wall(4, 5, 1, 1), new Wall(5, 5, 1, 1), new Wall(6, 5, 1, 1), new MoveSpine(1, 3, 0), 
+        new MoveSpine(2, 3, 1), new MoveSpine(4, 3, 0), new MoveSpine(5, 3, 1)
+    ],
+    [ //stage14
         new Wall(2,3),new Wall(2,2),new Wall(3,2),new Wall(4,2),
         new Wall(4,3),new Wall(4,4),new Wall(4,5),new Wall(4,6),
         new Wall(3,6),new Wall(2,6),new Wall(1,6),new Wall(0,6),
@@ -105,7 +131,7 @@ const stageObj = [
         new Enemy(2,4),new Enemy(1,4),new Enemy(2,1),new Enemy(5,5),
         new PushWall(1,2,0)
     ],
-    [ //stage11
+    [ //stage15
         new Wall(4, 1, 3, 6),new Wall(0, 6, 4, 1),
         
         new Wall(3, 2, 1, 1), new Wall(3, 1, 1, 1), new PushWall(2, 0, 0), new Wall(4, 1, 1, 1), 
@@ -115,7 +141,7 @@ const stageObj = [
         new Wall(4, 3, 1, 1), new Wall(4, 4, 1, 1), new Wall(3, 5, 1, 1), new Wall(2, 5, 1, 1), new Wall(1, 5, 1, 1), 
         new Wall(0, 5, 1, 1)
     ],
-	[ //stage12
+	[ //stage16
 		new Wall(2, 0, 1, 1), new Wall(2, 1, 1, 1), new Wall(3, 1, 1, 1), new PushWall(4, 0, 0), 
 		new PushWall(4, 1, 0), new PushWall(5, 1, 0), new PushWall(6, 2, 0), new Wall(4, 4, 1, 1), 
 		new Wall(3, 4, 1, 1), new Wall(2, 4, 1, 1), new Wall(6, 4, 1, 1), new Wall(4, 3, 1, 1), 
@@ -126,7 +152,7 @@ const stageObj = [
 		new MoveSpine(1, 3, 0),
 		new Wall(5, 5, 2, 2)
 	],
-	[ //stage13
+	[ //stage17
 		new PushWall(3, 4, 0), new PushWall(2, 5, 0), new PushWall(4, 5, 0), new PushWall(5, 4, 0),
 		new PushWall(1, 4, 0), new PushWall(2, 3, 0), new PushWall(4, 3, 0), new PushWall(2, 2, 0),
 		new PushWall(3, 2, 0), new MoveSpine(4, 4, 0), new Enemy(0, 6), new Enemy(6, 6), new Spine(0, 5),
@@ -135,7 +161,7 @@ const stageObj = [
 		new Spine(4, 1), new Wall(1, 2, 1, 1), new MoveSpine(0, 2, 0), new MoveSpine(2, 4, 0), new MoveSpine(3, 3, 0),
 		new MoveSpine(4, 2, 0), new Wall(2, 0, 1, 1)
 	],
-	[ //stage14
+	[ //stage18
 		new Wall(6, 2, 1, 1), new Wall(5, 2, 1, 1), new Wall(4, 2, 1, 1), new Wall(4, 4, 1, 1),
 		new Wall(4, 5, 1, 1), new MoveSpine(6, 5, 0), new MoveSpine(6, 4, 1), new Spine(5, 5),
 		new Wall(2, 4, 1, 1), new Wall(2, 5, 1, 1), new Wall(3, 2, 1, 1), new Wall(2, 2, 1, 1),
@@ -145,7 +171,7 @@ const stageObj = [
 		new Enemy(1, 5), new MoveSpine(3, 6, 0), new Spine(0, 6), new MoveSpine(4, 6, 1), new Spine(5, 6),
 		new Wall(5, 0, 2, 2)
 	],
-	[ //stage 15
+	[ //stage19
 		new Wall(6, 2, 1, 1), new Wall(5, 3, 1, 1), new Wall(4, 4, 1, 1), new Wall(3, 4, 1, 1), 
 		new Wall(2, 4, 1, 1), new Wall(2, 5, 1, 1), new Wall(3, 5, 1, 1), new Wall(4, 5, 1, 1), 
 		new Wall(2, 0, 1, 1), new Wall(2, 1, 1, 1), new Wall(2, 2, 1, 1), new Wall(0, 2, 1, 1), new Wall(0, 5, 1, 1), 
@@ -238,6 +264,11 @@ function stageSetup() {
             document.getElementById("help").innerHTML = "화면을 스와이프 하거나<br>방향키를 눌러 이동할 수 있습니다.";
             break;
         case 7:
+            char.hp=24; char.x=6*scale; char.y=0*scale;
+            door.close=1; door.x=4*scale; door.y=0*scale;
+            keykey.x=4*scale; keykey.y=6*scale;
+            break;
+        case 8:
             char.hp = 15;
             char.x = 4*scale;
             char.y = 0*scale;
@@ -245,7 +276,12 @@ function stageSetup() {
             door.y = 0*scale;
             door.close = 0;
             break;
-        case 8:
+        case 9:
+            char.hp=14; char.x=6*scale; char.y=0*scale;
+            door.close=1; door.x=3*scale; door.y=6*scale;
+            keykey.x=4*scale; keykey.y=0*scale;
+            break;
+        case 10:
             char.hp = 33;
             char.x = 3*scale;
             char.y = 6*scale;
@@ -255,7 +291,12 @@ function stageSetup() {
             keykey.x = 5*scale;
             keykey.y = 6*scale;
             break;
-        case 9:
+        case 11:
+            char.hp=7; char.x=3*scale; char.y=3*scale;
+            door.close=0; door.x=0*scale; door.y=6*scale;
+            keykey.x=0*scale; keykey.y=0*scale;
+            break;
+        case 12:
             char.hp = 15;
             char.x = 0*scale;
             char.y = 6*scale;
@@ -263,7 +304,12 @@ function stageSetup() {
             door.y = 1*scale;
             door.close = 0;
             break;
-        case 10:
+        case 13:
+            char.hp=27; char.x=5*scale; char.y=1*scale;
+            door.close=1; door.x=3*scale; door.y=3*scale;
+            keykey.x=1*scale; keykey.y=1*scale;
+            break;
+        case 14:
             char.hp = 40;
             char.x = 3*scale;
             char.y = 3*scale;
@@ -273,40 +319,39 @@ function stageSetup() {
             keykey.x = 5*scale;
             keykey.y = 6*scale;
             break;
-        case 11:
+        case 15:
             char.hp=22; char.x=3*scale; char.y=3*scale;
             door.close=1; door.x=3*scale; door.y=0*scale;
             keykey.x=4*scale; keykey.y=0*scale;
             break;
-	case 12:
-            	char.hp=24; char.x=3*scale; char.y=0*scale;
-		door.close=1; door.x=3*scale; door.y=5*scale;
-		keykey.x=1*scale; keykey.y=1*scale;
-           		break;
-	case 13:
-            	char.hp=15; char.x=3*scale; char.y=5*scale;
-		door.close=0; door.x=3*scale; door.y=0*scale;
-		keykey.x=3*scale; keykey.y=1*scale;
-            	break;
-	case 14:
-            	char.hp=29; char.x=3*scale; char.y=0*scale;
-		door.close=1; door.x=5*scale; door.y=3*scale;
-		keykey.x=1*scale; keykey.y=6*scale;
-		break;
-
-	case 15:
-            	char.hp=32; char.x=6*scale; char.y=3*scale;
-		door.close=1; door.x=3*scale; door.y=3*scale;
-		keykey.x=0*scale; keykey.y=1*scale;
-            	break;
-	case 16:
-            	char.hp = 1;
-            	char.x = 3*scale;
-            	char.y = 3*scale;
-            	door.x = 3*scale;
-            	door.y = 3*scale;
-            	door.close = 0;
-            	break;
+	    case 16:
+            char.hp=24; char.x=3*scale; char.y=0*scale;
+		    door.close=1; door.x=3*scale; door.y=5*scale;
+		    keykey.x=1*scale; keykey.y=1*scale;
+           	break;
+	    case 17:
+            char.hp=15; char.x=3*scale; char.y=5*scale;
+		    door.close=0; door.x=3*scale; door.y=0*scale;
+		    keykey.x=3*scale; keykey.y=1*scale;
+            break;
+	    case 18:
+            char.hp=29; char.x=3*scale; char.y=0*scale;
+		    door.close=1; door.x=5*scale; door.y=3*scale;
+		    keykey.x=1*scale; keykey.y=6*scale;
+		    break;
+	    case 19:
+            char.hp=32; char.x=6*scale; char.y=3*scale;
+		    door.close=1; door.x=3*scale; door.y=3*scale;
+		    keykey.x=0*scale; keykey.y=1*scale;
+            break;
+	    case 20:
+            char.hp = 1;
+            char.x = 3*scale;
+            char.y = 3*scale;
+            door.x = 3*scale;
+            door.y = 3*scale;
+            door.close = 0;
+            break;
     }
     document.getElementById("char.hp").textContent = `Hp: ${char.hp}`;
     document.getElementById("stage").textContent = `Lv: ${stage}`;
