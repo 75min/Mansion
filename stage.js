@@ -209,6 +209,7 @@ function stageSetup() {
             break;
             
         case 1: //tutorial: Key
+            closet.x = -1*scale;
             char.hp = 13; char.x = 3*scale; char.y = 0*scale;
             door.x = 2*scale; door.y = 0*scale; door.close = 1;
             keykey.x = 3*scale; keykey.y = 6*scale;

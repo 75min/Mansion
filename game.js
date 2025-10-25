@@ -46,6 +46,13 @@ let keykey = {
     y: 0*scale
 };
 
+let closet = {
+    x: 1*scale,
+    y: 3*scale,
+    cloth_all: 2,
+    cloth: 1
+};
+
 document.addEventListener("mousedown", (event) => { //개발자 모드: 맵 생성/수정/삭제
     if (dev == 1 && stage == 0) {
         if (event.button === 0) { //마우스 좌클릭: 생성
@@ -330,6 +337,7 @@ document.addEventListener('keydown', (event) => {
     if (event.ctrlKey) { //디벨로퍼 모드
         if (dev == 0) {
             dev = 1;
+            closet.x = -1*scale;
             console.log("devMode: ON\n1,2,3,4,5,8,9,0: 모드 변경\nLMB: 생성\nMMB: 가시 ON/OFF\nRMB: 삭제");
         } else {
             dev = 0;
@@ -403,6 +411,7 @@ function step() {
         && !isColliding(char.targetX, char.targetY, PushWall)
         && !isCollidEnemy(char.targetX, char.targetY)
         && !isRoomOut(char.targetX, char.targetY)
+        && !isCollidit(char.targetX, char.targetY, closet.x, closet.y)
         && stopper == 0
     ) {
         switch (char.moving) {
@@ -419,7 +428,9 @@ function step() {
                 char.y += GameSpeed;
                 break;
         }
-    } else if (isColliding(char.targetX, char.targetY, PushWall) || isCollidEnemy(char.targetX, char.targetY)) {
+    } else if (isColliding(char.targetX, char.targetY, PushWall) 
+        || isCollidEnemy(char.targetX, char.targetY) 
+        || isCollidit(char.targetX, char.targetY, closet.x, closet.y)) {
         stopper = 1;
     }
     for (const obj of stageObj[stage]) { if (obj instanceof PushWall) {
@@ -450,6 +461,17 @@ function Moved() {
         }
         if (isCollide(keykey)) { //열쇠와 충돌시
             if (door.close == 1) {door.close = 0;}
+        }
+        if (isCollidit(char.targetX, char.targetY, closet.x, closet.y)) { //장롱과 충돌시 옷 변경
+            if (closet.cloth < closet.cloth_all) {closet.cloth += 1;} else {closet.cloth = 1;}
+            switch (closet.cloth) {
+                case 1:
+                    spr_char.src = "sprites/spr_char001.png"
+                    break;
+                case 2:
+                    spr_char.src = "sprites/spr_char002.png"
+                    break;
+            }
         }
 
         for (const obj of stageObj[stage]) { if (obj instanceof PushWall) { //밀 수 있는 벽과 충돌시
@@ -524,6 +546,14 @@ function draw() {
         if (door.y == i*scale) {ctx.drawImage(spr_door, door.close*scale, 0, scaleW, scaleH, door.x, door.y, scaleW, scaleH);}
         if (door.close == 1) {
             if (keykey.y == i*scale) {ctx.drawImage(spr_key, keykey.x, keykey.y, scaleW, scaleH);}
+        }
+
+        if (closet.y == i*scale) { //장롱에서 옷 변경, 장롱 흔들림 애니메이팅
+            if (isCollidit(char.targetX, char.targetY, closet.x, closet.y))  {
+                if (char.moving != -1) {
+                    drawFrame(spr_closet, currentFrm, 0, closet.x, closet.y);
+                } else {ctx.drawImage(spr_closet, 0, 0, scaleW, scaleH, closet.x, closet.y, scaleW, scaleH);}
+            } else {ctx.drawImage(spr_closet, 0, 0, scaleW, scaleH, closet.x, closet.y, scaleW, scaleH);}
         }
 
         stageObj[stage].forEach((obj, index) => {
