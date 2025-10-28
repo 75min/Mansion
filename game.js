@@ -18,7 +18,8 @@ let devChar = [30,0,0, 0,0,0, 0,0]; //char.hp,x,y, door.on,x,y, keykey.x,y
 let devObj = [];
 let devDel = [];
 
-let stage = 0;
+let stage = 19;
+let tileSet = 0;
 
 let frmCycle = [0,1,2,3];
 let currentFrm = 0;
@@ -527,12 +528,12 @@ function draw() {
     ctx.clearRect(0,0,canvas.width,canvas.height);
     for (i=0; i<columns; i++) {
         for (j=0; j<rows; j++) {
-            ctx.drawImage(bck_tile, scale*2*0, 0, scale*2, scale*2, i*scale*2, j*scale*2, scale*2, scale*2);
+            ctx.drawImage(bck_tile, scale*2*tileSet, 0, scale*2, scale*2, i*scale*2, j*scale*2, scale*2, scale*2);
         }
     }
 
     for (i=0; i<columns; i++) {
-        stageObj[stage].forEach((obj, index) => { //draw empty black space
+        stageObj[stage].forEach((obj, index) => { //draw empty black space: 확장된 wall 이미지일 경우 fillRect로 대신 채우기
             if (obj instanceof Wall && obj.y == i*scale) {
                 if (obj.w != 1 || obj.h != 1) {
                     ctx.fillStyle = "black";
@@ -543,9 +544,9 @@ function draw() {
 
         ctx.save();
         ctx.translate(0, -scale/2);
-        if (door.y == i*scale) {ctx.drawImage(spr_door, door.close*scale, 0, scaleW, scaleH, door.x, door.y, scaleW, scaleH);}
+        if (door.y == i*scale) {ctx.drawImage(spr_door, door.close*scale, tileSet*scaleH, scaleW, scaleH, door.x, door.y, scaleW, scaleH);}
         if (door.close == 1) {
-            if (keykey.y == i*scale) {ctx.drawImage(spr_key, keykey.x, keykey.y, scaleW, scaleH);}
+            if (keykey.y == i*scale) {ctx.drawImage(spr_key, tileSet*scaleW, 0, scaleW, scaleH, keykey.x, keykey.y, scaleW, scaleH);}
         }
 
         if (closet.y == i*scale) { //장롱에서 옷 변경, 장롱 흔들림 애니메이팅
@@ -557,26 +558,26 @@ function draw() {
         }
 
         stageObj[stage].forEach((obj, index) => {
-            if (obj instanceof Wall && obj.y == i*scale) {
+            if (obj instanceof Wall && obj.y == i*scale) { //벽 그리기
                 if (obj.w == 1 || obj.h == 1) {
                     ctx.drawImage(spr_wall, obj.x, obj.y, scaleW, scaleH);
                 }
             }
-            if (obj instanceof PushWall && Math.floor(obj.y/scale)*scale == i*scale) {
-                ctx.drawImage(spr_pushwall, obj.x, obj.y, scaleW, scaleH);
+            if (obj instanceof PushWall && Math.floor(obj.y/scale)*scale == i*scale) { //밀 수 있는 벽: 꽃 그리기
+                ctx.drawImage(spr_pushwall, tileSet*scaleW, 0, scaleW, scaleH, obj.x, obj.y, scaleW, scaleH);
             }
-            if (obj instanceof Spine && obj.y == i*scale) {
-                ctx.drawImage(spr_spine, obj.x, obj.y, scaleW, scaleH);
+            if (obj instanceof Spine && obj.y == i*scale) { //고정가시 그리기
+                ctx.drawImage(spr_spine, tileSet*scaleW, 0, scaleW, scaleH, obj.x, obj.y, scaleW, scaleH);
             }
-            if (obj instanceof MoveSpine && obj.y == i*scale) {
+            if (obj instanceof MoveSpine && obj.y == i*scale) { //점멸가시 그리기
                 if (char.moving != -1) {
                     if (obj.on == 0) {
-                        drawFrame(spr_movespine, obj.frameA[currentFrm], 0, obj.x, obj.y);
-                    } else {drawFrame(spr_movespine, obj.frameB[currentFrm], 0, obj.x, obj.y);}
-                } else {ctx.drawImage(spr_movespine, obj.on*scale*3, 0, scaleW, scaleH, obj.x, obj.y, scaleW, scaleH);}
+                        drawFrame(spr_movespine, obj.frameA[currentFrm], tileSet, obj.x, obj.y);
+                    } else {drawFrame(spr_movespine, obj.frameB[currentFrm], tileSet, obj.x, obj.y);}
+                } else {ctx.drawImage(spr_movespine, obj.on*scale*3, tileSet*scaleH, scaleW, scaleH, obj.x, obj.y, scaleW, scaleH);}
             }
-            if (obj instanceof Enemy && Math.floor(obj.y/scale)*scale == i*scale) {
-                ctx.drawImage(spr_enemy, Math.abs(obj.alive -1)*scale, 0, scaleW, scaleH, obj.x, obj.y, scaleW, scaleH);
+            if (obj instanceof Enemy && Math.floor(obj.y/scale)*scale == i*scale) { //적: 석고상 그리기
+                ctx.drawImage(spr_enemy, Math.abs(obj.alive -1)*scale, tileSet*scaleH, scaleW, scaleH, obj.x, obj.y, scaleW, scaleH);
             }
         });
 

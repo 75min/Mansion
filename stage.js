@@ -180,6 +180,22 @@ const stageObj = [
 		new Wall(4, 2, 1, 1),
 		new Wall(3,0,4,3)
 	],
+    [ //stage20: First chapter end
+        new Wall(1, 2, 1, 1), new Wall(2, 1, 1, 1), new Wall(4, 1, 1, 1), new Wall(2, 5, 1, 1), 
+        new Wall(3, 5, 1, 1), new Wall(4, 5, 1, 1), new Wall(1, 3, 1, 1), new Wall(1, 4, 1, 1), 
+        new Wall(5, 2, 1, 1), new Wall(5, 3, 1, 1), new Wall(5, 4, 1, 1), new Wall(2, 0, 1, 1), 
+        new Wall(4, 0, 1, 1), new Wall(0, 0, 2, 7), new Wall(5, 0, 2, 7), new Wall(2, 6, 3, 1)
+    ],
+    [ //stage21: Second chapter lobby
+        new PushWall(5, 5, 0), new PushWall(1, 5, 0), new PushWall(1, 1, 0), new PushWall(5, 1, 0), new Enemy(1, 3), new Enemy(5, 3)
+    ],
+    [ //stage22
+        new Wall(6, 3, 1, 1), new Wall(5, 3, 1, 1), new Wall(4, 3, 1, 1), new Wall(3, 3, 1, 1), 
+        new Wall(0, 3, 1, 1), new Wall(6, 4, 1, 1), new Wall(6, 6, 1, 1), new Wall(0, 2, 1, 1), 
+        new Wall(0, 1, 1, 1), new Wall(0, 0, 1, 1), new Wall(1, 3, 1, 1), new PushWall(0, 4, 0), 
+        new PushWall(0, 6, 0), new PushWall(5, 4, 0), new PushWall(5, 6, 0), new Enemy(5, 1), 
+        new Spine(2, 1), new Spine(1, 4)
+    ],
     [ //end
         new Wall(0,0, 2,7),new Wall(5,0, 2,7),new Wall(2,0, 3,2),new Wall(2,5, 3,2)
     ]
@@ -209,7 +225,7 @@ function stageSetup() {
             break;
             
         case 1: //tutorial: Key
-            closet.x = -1*scale;
+            closet.x = -2*scale;
             char.hp = 13; char.x = 3*scale; char.y = 0*scale;
             door.x = 2*scale; door.y = 0*scale; door.close = 1;
             keykey.x = 3*scale; keykey.y = 6*scale;
@@ -345,7 +361,25 @@ function stageSetup() {
 		    door.close=1; door.x=3*scale; door.y=3*scale;
 		    keykey.x=0*scale; keykey.y=1*scale;
             break;
-	    case 20:
+        case 20: //first chapter end room
+            closet.x = 2*scale;
+            char.hp=30; char.x=3*scale; char.y=3*scale;
+            door.close=0; door.x=3*scale; door.y=0*scale;
+            keykey.x=0*scale; keykey.y=0*scale;
+            break;
+        case 21: //second chapter lobby
+            tileSet = 1;
+            closet.x = -2*scale;
+            char.hp=30; char.x=3*scale; char.y=0*scale;
+            door.close=0; door.x=3*scale; door.y=6*scale;
+            keykey.x=0*scale; keykey.y=0*scale;
+            break;
+        case 22:
+            char.hp=10; char.x=3*scale; char.y=0*scale;
+            door.close=0; door.x=6*scale; door.y=5*scale;
+            keykey.x=0*scale; keykey.y=0*scale;
+            break;
+	    case 23:
             char.hp = 1;
             char.x = 3*scale;
             char.y = 3*scale;
