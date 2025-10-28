@@ -18,7 +18,7 @@ let devChar = [30,0,0, 0,0,0, 0,0]; //char.hp,x,y, door.on,x,y, keykey.x,y
 let devObj = [];
 let devDel = [];
 
-let stage = 19;
+let stage = 0;
 let tileSet = 0;
 
 let frmCycle = [0,1,2,3];
